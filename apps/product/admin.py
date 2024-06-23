@@ -1,3 +1,18 @@
 from django.contrib import admin
+from apps.product.models import Banner, Category, Tag, Product, ProductImage, Rate
 
-# Register your models here.
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 0
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    inlines = [ProductImageInline]
+
+
+admin.site.register(Banner)
+admin.site.register(Category)
+admin.site.register(Tag)
+admin.site.register(ProductImage)
+admin.site.register(Rate)
+
