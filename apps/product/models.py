@@ -21,6 +21,7 @@ class Category(BaseModel):
         related_name='children',
         limit_choices_to={'parent__isnull': True}
     )
+    image = models.ImageField(upload_to="cats/", null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -49,6 +50,9 @@ class Product(BaseModel):
 
     def __str__(self):
         return self.name
+    
+    def get_detail(self):
+        ...
 
     @property
     def discount(self):
@@ -59,10 +63,6 @@ class Product(BaseModel):
     @property
     def tag_list(self):
         return ', '.join([tag.name for tag in self.tags.all()])
-    
-    @property
-    def images(self):
-        return self.images.all()
     
     @property
     def avg_rate(self):
