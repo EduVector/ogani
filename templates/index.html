@@ -12,17 +12,9 @@
             <span>All departments</span>
           </div>
           <ul>
-            <li><a href="#">Fresh Meat</a></li>
-            <li><a href="#">Vegetables</a></li>
-            <li><a href="#">Fruit & Nut Gifts</a></li>
-            <li><a href="#">Fresh Berries</a></li>
-            <li><a href="#">Ocean Foods</a></li>
-            <li><a href="#">Butter & Eggs</a></li>
-            <li><a href="#">Fastfood</a></li>
-            <li><a href="#">Fresh Onion</a></li>
-            <li><a href="#">Papayaya & Crisps</a></li>
-            <li><a href="#">Oatmeal</a></li>
-            <li><a href="#">Fresh Bananas</a></li>
+            {% for cat in categories %}
+            <li><a href="{% url 'home' %}?cat={{cat.name}}">{{ cat.name }}</a></li>
+            {% endfor %}
           </ul>
         </div>
       </div>
@@ -68,7 +60,7 @@
       <div class="categories__slider owl-carousel">
         {% for cat in categories %}
         <div class="col-lg-3">
-          <div class="categories__item set-bg" data-setbg="{{ cat.image.url }}">
+          <div class="categories__item set-bg" data-setbg="{% if cat.image %} {{ cat.image.url }} {% else %}{% static 'img/category.jpeg' %}{% endif %}">
             <h5><a href="?cat={{ cat.name }}">{{ cat.name }}</a></h5>
           </div>
         </div>
@@ -108,12 +100,13 @@
               <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
             </ul>
           </div>
-          <div class="featured__item__text">
-            <h6><a href="#">{{ prod.name }}</a></h6>
+          <div class="product__discount__item__text">
+            <span>{{ prod.category.name }}</span>
+            <h5><a href="{% url 'detail' prod.id %}">{{ prod.name }}</a></h5>
             {% if prod.percentage %}
-              <div class="product__item__price">{{ prod.discount }} <span>{{ prod.proce }}</span></div>
+              <div class="product__item__price">${{ prod.discount }} <span>${{ prod.price }}</span></div>
             {% else %}
-              <h5>{{ prod.price }}</h5>
+            <div class="product__item__price">${{ prod.price }}</div>
             {% endif %}
           </div>
         </div>
@@ -127,16 +120,13 @@
 <div class="banner">
   <div class="container">
     <div class="row">
+      {% for banner in last_two_banners %}
       <div class="col-lg-6 col-md-6 col-sm-6">
         <div class="banner__pic">
-          <img src="img/banner/banner-1.jpg" alt>
+          <img src="{{banner.image.url}}" alt>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-6">
-        <div class="banner__pic">
-          <img src="img/banner/banner-2.jpg" alt>
-        </div>
-      </div>
+      {% endfor %}
     </div>
   </div>
 </div>
@@ -150,62 +140,30 @@
           <h4>Latest Products</h4>
           <div class="latest-product__slider owl-carousel">
             <div class="latest-prdouct__slider__item">
+              {% for product in last_products|slice:"0:3" %}
               <a href="#" class="latest-product__item">
                 <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-1.jpg" alt>
+                  <img src="{{ product.images.first.image.url }}" alt>
                 </div>
                 <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
+                  <h6>{{ product.name }}</h6>
+                  <span>{{ product.discount }}</span>
                 </div>
               </a>
-              <a href="#" class="latest-product__item">
-                <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-2.jpg" alt>
-                </div>
-                <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
-                </div>
-              </a>
-              <a href="#" class="latest-product__item">
-                <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-3.jpg" alt>
-                </div>
-                <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
-                </div>
-              </a>
+              {% endfor %}
             </div>
             <div class="latest-prdouct__slider__item">
+              {% for product in last_products|slice:"3:" %}
               <a href="#" class="latest-product__item">
                 <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-1.jpg" alt>
+                  <img src="{{ product.images.first.image.url }}" alt>
                 </div>
                 <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
+                  <h6>{{ product.name }}</h6>
+                  <span>{{ product.discount }}</span>
                 </div>
               </a>
-              <a href="#" class="latest-product__item">
-                <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-2.jpg" alt>
-                </div>
-                <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
-                </div>
-              </a>
-              <a href="#" class="latest-product__item">
-                <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-3.jpg" alt>
-                </div>
-                <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
-                </div>
-              </a>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -215,62 +173,30 @@
           <h4>Top Rated Products</h4>
           <div class="latest-product__slider owl-carousel">
             <div class="latest-prdouct__slider__item">
+              {% for product in top_reted_products|slice:"0:3" %}
               <a href="#" class="latest-product__item">
                 <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-1.jpg" alt>
+                  <img src="{{ product.images.first.image.url }}" alt>
                 </div>
                 <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
+                  <h6>{{ product.name }}</h6>
+                  <span>{{ product.discount }}</span>
                 </div>
               </a>
-              <a href="#" class="latest-product__item">
-                <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-2.jpg" alt>
-                </div>
-                <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
-                </div>
-              </a>
-              <a href="#" class="latest-product__item">
-                <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-3.jpg" alt>
-                </div>
-                <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
-                </div>
-              </a>
+              {% endfor %}
             </div>
             <div class="latest-prdouct__slider__item">
+              {% for product in top_reted_products|slice:"3:" %}
               <a href="#" class="latest-product__item">
                 <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-1.jpg" alt>
+                  <img src="{{ product.images.first.image.url }}" alt>
                 </div>
                 <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
+                  <h6>{{ product.name }}</h6>
+                  <span>{{ product.discount }}</span>
                 </div>
               </a>
-              <a href="#" class="latest-product__item">
-                <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-2.jpg" alt>
-                </div>
-                <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
-                </div>
-              </a>
-              <a href="#" class="latest-product__item">
-                <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-3.jpg" alt>
-                </div>
-                <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
-                </div>
-              </a>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -280,62 +206,30 @@
           <h4>Review Products</h4>
           <div class="latest-product__slider owl-carousel">
             <div class="latest-prdouct__slider__item">
+              {% for product in review_products|slice:"0:3" %}
               <a href="#" class="latest-product__item">
                 <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-1.jpg" alt>
+                  <img src="{{ product.images.first.image.url }}" alt>
                 </div>
                 <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
+                  <h6>{{ product.name }}</h6>
+                  <span>{{ product.discount }}</span>
                 </div>
               </a>
-              <a href="#" class="latest-product__item">
-                <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-2.jpg" alt>
-                </div>
-                <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
-                </div>
-              </a>
-              <a href="#" class="latest-product__item">
-                <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-3.jpg" alt>
-                </div>
-                <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
-                </div>
-              </a>
+              {% endfor %}
             </div>
             <div class="latest-prdouct__slider__item">
+              {% for product in review_products|slice:"3:" %}
               <a href="#" class="latest-product__item">
                 <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-1.jpg" alt>
+                  <img src="{{ product.images.first.image.url }}" alt>
                 </div>
                 <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
+                  <h6>{{ product.name }}</h6>
+                  <span>{{ product.discount }}</span>
                 </div>
               </a>
-              <a href="#" class="latest-product__item">
-                <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-2.jpg" alt>
-                </div>
-                <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
-                </div>
-              </a>
-              <a href="#" class="latest-product__item">
-                <div class="latest-product__item__pic">
-                  <img src="img/latest-product/lp-3.jpg" alt>
-                </div>
-                <div class="latest-product__item__text">
-                  <h6>Crab Pool Security</h6>
-                  <span>$30.00</span>
-                </div>
-              </a>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -355,51 +249,26 @@
       </div>
     </div>
     <div class="row">
+      {% for article in articles %}
       <div class="col-lg-4 col-md-4 col-sm-6">
         <div class="blog__item">
           <div class="blog__item__pic">
-            <img src="img/blog/blog-1.jpg" alt>
+            {% if article.image %}
+            <img src="{{ article.image.url }}" alt>
+            {% else %}
+            <img src="{% static '' %}img/blog/blog-1.jpg" alt>
+            {% endif %}
           </div>
           <div class="blog__item__text">
             <ul>
-              <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-              <li><i class="fa fa-comment-o"></i> 5</li>
+              <li><i class="fa fa-calendar-o"></i> {{ article.created_at|date }}</li>
             </ul>
-            <h5><a href="#">Cooking tips make cooking simple</a></h5>
-            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+            <h5><a href="#">{{ article.name|slice:":35" }} ...</a></h5>
+            <p>{{ article.description|safe|slice:":107" }} ...</p>
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="blog__item">
-          <div class="blog__item__pic">
-            <img src="img/blog/blog-2.jpg" alt>
-          </div>
-          <div class="blog__item__text">
-            <ul>
-              <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-              <li><i class="fa fa-comment-o"></i> 5</li>
-            </ul>
-            <h5><a href="#">6 ways to prepare breakfast for 30</a></h5>
-            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="blog__item">
-          <div class="blog__item__pic">
-            <img src="img/blog/blog-3.jpg" alt>
-          </div>
-          <div class="blog__item__text">
-            <ul>
-              <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-              <li><i class="fa fa-comment-o"></i> 5</li>
-            </ul>
-            <h5><a href="#">Visit the clean farm in the US</a></h5>
-            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-          </div>
-        </div>
-      </div>
+      {% endfor %}
     </div>
   </div>
 </section>
