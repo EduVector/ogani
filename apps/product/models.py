@@ -2,11 +2,18 @@ from django.db import models
 from apps.common.models import BaseModel
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 
 class Banner(BaseModel):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='banners/')
+    parent = models.ForeignKey(
+        'self', 
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        limit_choices_to={"parent__isnull": True},
+        related_name="children")
 
     def __str__(self):
         return self.name
@@ -14,13 +21,7 @@ class Banner(BaseModel):
 
 class Category(BaseModel):
     name = models.CharField(max_length=50)
-    parent = models.ForeignKey(
-        'self',
-        on_delete=models.CASCADE, 
-        null=True, blank=True, 
-        related_name='children',
-        limit_choices_to={'parent__isnull': True}
-    )
+    image = models.ImageField(upload_to="cats/", null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -36,19 +37,22 @@ class Tag(BaseModel):
 class Product(BaseModel):
     name = models.CharField(max_length=100)
     banner = models.ForeignKey(Banner, on_delete=models.SET_NULL, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
+    description = RichTextField(null=True, blank=True)
     views = models.IntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     percentage = models.IntegerField()
-    categories = models.ManyToManyField(
-        Category,
-        blank=True,
-        limit_choices_to={'is_active': True, 'parent__isnull': False}
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE,
+        blank=True, null=True,
+        related_name="products"        
     )
     tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
         return self.name
+
+    def get_detail(self):
+        ...
 
     @property
     def discount(self):
@@ -59,10 +63,6 @@ class Product(BaseModel):
     @property
     def tag_list(self):
         return ', '.join([tag.name for tag in self.tags.all()])
-    
-    @property
-    def images(self):
-        return self.images.all()
     
     @property
     def avg_rate(self):

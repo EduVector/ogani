@@ -1,7 +1,12 @@
 from django.contrib import admin
-from apps.blog.models import Tag, Category, Blog
+from apps.blog.forms import BlogAdminForm
+from apps.blog.models import Blog, Category, Tag
+
+@admin.register(Blog)
+class BlogAdmin(admin.ModelAdmin):
+    form = BlogAdminForm
+    list_display = ['id', 'name', 'category', 'created_at']
 
 
-admin.site.register(Tag)
 admin.site.register(Category)
-admin.site.register(Blog)
+admin.site.register(Tag)
