@@ -3,25 +3,22 @@ from apps.common.models import BaseModel
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
-
-
-class Banner(BaseModel):
-    name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='banners/')
-    parent = models.ForeignKey(
-        'self', 
-        on_delete=models.CASCADE,
-        null=True, blank=True,
-        limit_choices_to={"parent__isnull": True},
-        related_name="children")
-
-    def __str__(self):
-        return self.name
+from django.template.defaultfilters import slugify
+from django.urls import reverse
 
 
 class Category(BaseModel):
     name = models.CharField(max_length=50)
     image = models.ImageField(upload_to="cats/", null=True, blank=True)
+
+    slug = models.SlugField(unique=True, null=True, blank=True, max_length=225)
+
+    def save(self, *args, **kwargs):  
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+        return super().save(*args, **kwargs)
+    
 
     def __str__(self):
         return self.name
@@ -29,6 +26,34 @@ class Category(BaseModel):
 
 class Tag(BaseModel):
     name = models.CharField(max_length=100)
+
+    slug = models.SlugField(unique=True, null=True, blank=True, max_length=225)
+
+    def save(self, *args, **kwargs):  
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+        return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
+class Banner(BaseModel):
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='banners/')
+    description = RichTextField(null=True, blank=True)
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE,
+        blank=True, null=True,
+    )
+    
+    parent = models.ForeignKey(
+        'self', 
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        limit_choices_to={"parent__isnull": True},
+        related_name="children")
 
     def __str__(self):
         return self.name
@@ -50,9 +75,9 @@ class Product(BaseModel):
 
     def __str__(self):
         return self.name
-
-    def get_detail(self):
-        ...
+    
+    def get_absolute_url(self):
+        return reverse("detail", kwargs={"slug": self.slug})
 
     @property
     def discount(self):

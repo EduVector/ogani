@@ -29,6 +29,7 @@ urlpatterns = [
 
     path('', include('apps.product.urls')),
     path('contact/', include('apps.contact.urls')),
+    path('blog/', include('apps.blog.urls')),
 
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),

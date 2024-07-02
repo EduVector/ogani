@@ -13,7 +13,7 @@
             </div>
             <ul>
               {% for cat in categories %}
-              <li><a href="{% url 'index' %}?cat={{cat.name}}">{{ cat.name }}</a></li>
+              <li><a href="{% url 'index' %}?cat={{ cat.slug }}">{{ cat.name }}</a></li>
               {% endfor %}
             </ul>
           </div>
