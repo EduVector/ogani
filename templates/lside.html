@@ -13,7 +13,7 @@
             <ul>
                 <li><a href="#">All</a></li>
                 {% for cat in category %}
-                <li><a href="{% url 'blog' %}?cat={{ cat.slug }}">{{ cat.name }} ({{ cat.blog_set.count }})</a></li>
+                <li><a href="{% url 'index' %}?cat={{ cat.slug }}">{{ cat.name }} ({{ cat.blog_set.count }})</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -37,7 +37,7 @@
             <h4>Search By</h4>
             <div class="blog__sidebar__item__tags">
                 {% for tag in tags %}
-                <a href="?tag={{ tag.slug }}">{{ tag.name }}</a>
+                <a href="{% url 'index' %}?tag={{ tag.slug }}">{{ tag.name }}</a>
                 {% endfor %}
             </div>
         </div>

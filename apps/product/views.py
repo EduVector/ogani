@@ -29,4 +29,11 @@ def index(request):
 def shop_detail(request, pk):
     product = Product.objects.filter(id=pk).first()
 
-    return render(request, 'detail.html', {"product": product})
+    related_products = Product.objects.all().order_by('-id')[:4]
+
+    context = {
+        'product': product,
+        'related_products': related_products,
+    }
+
+    return render(request, 'detail.html', context)
