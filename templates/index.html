@@ -5,19 +5,7 @@
 <section class="hero">
   <div class="container">
     <div class="row">
-      <div class="col-lg-3">
-        <div class="hero__categories">
-          <div class="hero__categories__all">
-            <i class="fa fa-bars"></i>
-            <span>All departments</span>
-          </div>
-          <ul>
-            {% for cat in categories %}
-            <li><a href="{% url 'home' %}?cat={{cat.name}}">{{ cat.name }}</a></li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
+      {% include 'categories.html' %}
       <div class="col-lg-9">
         <div class="hero__search">
           <div class="hero__search__form">
@@ -102,7 +90,7 @@
           </div>
           <div class="product__discount__item__text">
             <span>{{ prod.category.name }}</span>
-            <h5><a href="{% url 'detail' prod.id %}">{{ prod.name }}</a></h5>
+            <h5><a href="{% url 'detail' prod.slug %}">{{ prod.name }}</a></h5>
             {% if prod.percentage %}
               <div class="product__item__price">${{ prod.discount }} <span>${{ prod.price }}</span></div>
             {% else %}

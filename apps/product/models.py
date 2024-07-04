@@ -4,6 +4,9 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 
+from django.urls import reverse
+from django.template.defaultfilters import slugify
+
 
 class Banner(BaseModel):
     name = models.CharField(max_length=100)
@@ -36,11 +39,12 @@ class Tag(BaseModel):
 
 class Product(BaseModel):
     name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100, unique=True, blank=True, null=True)
     banner = models.ForeignKey(Banner, on_delete=models.SET_NULL, null=True, blank=True)
     description = RichTextField(null=True, blank=True)
     views = models.IntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    percentage = models.IntegerField()
+    percentage = models.IntegerField(null=True, blank=True)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE,
         blank=True, null=True,
@@ -48,11 +52,16 @@ class Product(BaseModel):
     )
     tags = models.ManyToManyField(Tag, blank=True)
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
     
-    def get_detail(self):
-        ...
+    def get_absolute_url(self):
+        return reverse("detail", kwargs={"slug": self.slug}) 
 
     @property
     def discount(self):
