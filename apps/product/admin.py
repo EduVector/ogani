@@ -12,6 +12,8 @@ class ProductImageInline(admin.TabularInline):
 
 class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImageInline]
+    list_display = ['name', 'price', 'category', 'percentage']
+    prepopulated_fields = {"slug": ("name",)}
 
 
 admin.site.register(Banner)

@@ -3,9 +3,10 @@ from apps.order.models import WishList, CartItem
 
 
 def objects(request):
-    categories = Category.objects.all()
-    wishlist_count = WishList.objects.all().count
-    
+    categories = Category.objects.all().order_by('name')
+    wishlist_count = 0
+    if request.user.is_authenticated:
+        wishlist_count = WishList.objects.filter(user=request.user).count()
 
     return {
         'categories': categories,

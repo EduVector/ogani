@@ -3,8 +3,8 @@ from apps.blog.models import Category, Tag, Blog
 
 
 def blog(request):
-    tag = request.GET.get('tag')
-    cat = request.GET.get('cat')
+    # tag = request.GET.get('tag')
+    # cat = request.GET.get('cat')
 
     blogs = Blog.objects.all().order_by('-id')[:6]
     recent_blogs = Blog.objects.all().order_by('-id')[:3]
@@ -12,11 +12,11 @@ def blog(request):
     categories = Category.objects.all().order_by('name')
 
 
-    if tag:
-        blogs = blogs.filter(tags__title__exact=tag)
+    # if tag:
+    #     blogs = blogs.filter(tags__slug__exact=tag)
 
-    if cat:
-        blogs = blogs.filter(category__slug__exact=cat)
+    # if cat:
+    #     blogs = blogs.filter(category__slug__exact=cat)
 
     context = {
         'blogs': blogs,
@@ -29,20 +29,20 @@ def blog(request):
     return render(request, 'blog.html', context)
 
 def blog_detail(request, slug):
-    tag = request.GET.get('tag')
-    cat = request.GET.get('cat')
+    # tag = request.GET.get('tag')
+    # cat = request.GET.get('cat')
 
     blog = Blog.objects.get(slug__exact=slug)
 
     blogs = Blog.objects.all().order_by('-id')[:3]
 
-    if tag:
-        blogs = blogs.filter(tags__title__exact=tag)
+    # if tag:
+    #     blogs = blogs.filter(tags__slug__exact=tag)
 
-    if cat:
-        blogs = blogs.filter(category__slug__exact=cat)    
+    # if cat:
+    #     blogs = blogs.filter(category__slug__exact=cat)    
 
-    context = {
+    context = { 
         'blog': blog,
         'blogs': blogs,
     }

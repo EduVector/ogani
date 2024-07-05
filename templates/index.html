@@ -7,19 +7,9 @@
 <section class="hero">
   <div class="container">
     <div class="row">
-      <div class="col-lg-3">
-        <div class="hero__categories">
-          <div class="hero__categories__all">
-            <i class="fa fa-bars"></i>
-            <span>All departments</span>
-          </div>
-          <ul>
-          {% for cat in categories %}
-          <li><a href="{% url 'index' %}?cat={{ cat.slug }}">{{ cat.name }}</a></li>
-          {% endfor %}
-          </ul>
-        </div>
-      </div>
+      
+      {% include 'categories.html' %}
+
       <div class="col-lg-9">
         <div class="hero__search">
           <div class="hero__search__form">
@@ -64,7 +54,7 @@
         <div class="col-lg-3">
           <div class="categories__item set-bg"
             data-setbg="{% if cat.image %} {{ cat.image.url }} {% else %} {% static 'img/dafault_cat.jpg' %} {% endif %}">
-            <h5><a href="{% url 'index' %}?cat={{ cat.slug }}">{{ cat.name }}</a></h5>
+            <h5><a href="?cat={{ cat.slug }}">{{ cat.name }}</a></h5>
           </div>
         </div>
         {% endfor %}
@@ -98,7 +88,7 @@
           </div>
           <div class="product__discount__item__text">
             <span>{{ prod.category.name }}</span>
-            <h5><a href="{% url 'detail' prod.id %}">{{ prod.name }}</a></h5>
+            <h5><a href="{% url 'detail' prod.slug %}">{{ prod.name }}</a></h5>
             {% if prod.percentage %}
             <div class="product__item__price">${{ prod.discount }} <span>${{ prod.price }}</span></div>
             {% else %}
@@ -137,7 +127,7 @@
           <div class="latest-product__slider owl-carousel">
             <div class="latest-prdouct__slider__item">
               {% for product in last_products|slice:"0:3" %}
-              <a href="{% url 'detail' product.id %}" class="latest-product__item">
+              <a href="{% url 'detail' product.slug %}" class="latest-product__item">
                 <div class="latest-product__item__pic">
                   <img src="{{ product.images.first.image.url }}" alt>
                 </div>
@@ -150,7 +140,7 @@
             </div>
             <div class="latest-prdouct__slider__item">
               {% for product in last_products|slice:"3:" %}
-              <a href="{% url 'detail' product.id %}" class="latest-product__item">
+              <a href="{% url 'detail' product.slug %}" class="latest-product__item">
                 <div class="latest-product__item__pic">
                   <img src="{{ product.images.first.image.url }}" alt>
                 </div>
@@ -170,7 +160,7 @@
           <div class="latest-product__slider owl-carousel">
             <div class="latest-prdouct__slider__item">
               {% for product in top_reted_products|slice:"0:3" %}
-              <a href="{% url 'detail' product.id %}" class="latest-product__item">
+              <a href="{% url 'detail' product.slug %}" class="latest-product__item">
                 <div class="latest-product__item__pic">
                   <img src="{{ product.images.first.image.url }}" alt>
                 </div>
@@ -183,7 +173,7 @@
             </div>
             <div class="latest-prdouct__slider__item">
               {% for product in top_reted_products|slice:"3:" %}
-              <a href="{% url 'detail' product.id %}" class="latest-product__item">
+              <a href="{% url 'detail' product.slug %}" class="latest-product__item">
                 <div class="latest-product__item__pic">
                   <img src="{{ product.images.first.image.url }}" alt>
                 </div>
@@ -203,7 +193,7 @@
           <div class="latest-product__slider owl-carousel">
             <div class="latest-prdouct__slider__item">
               {% for product in review_products|slice:"0:3" %}
-              <a href="{% url 'detail' product.id %}" class="latest-product__item">
+              <a href="{{ product.get_absolute_url }}" class="latest-product__item">
                 <div class="latest-product__item__pic">
                   <img src="{{ product.images.first.image.url }}" alt>
                 </div>
@@ -216,7 +206,7 @@
             </div>
             <div class="latest-prdouct__slider__item">
               {% for product in review_products|slice:"3:" %}
-              <a href="{% url 'detail' product.id %}" class="latest-product__item">
+              <a href="{{ product.get_absolute_url }}" class="latest-product__item">
                 <div class="latest-product__item__pic">
                   <img src="{{ product.images.first.image.url }}" alt>
                 </div>

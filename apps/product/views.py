@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import Banner, Category, Product
 from apps.blog.models import Blog
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 def index(request):
@@ -26,10 +28,29 @@ def index(request):
 
     return render(request, 'index.html', context)
 
-def shop_detail(request, pk):
-    product = Product.objects.filter(id=pk).first()
+def shop(request):
+    page = request.GET.get('page')
 
-    related_products = Product.objects.all().order_by('-id')[:4]
+    products = Product.objects.all()
+    sale_products = products.order_by('-percentage').exclude(Q(percentage=None) | Q(percentage=0))[:6]
+    last_products = products.order_by('-id')[:6]
+
+    paginator = Paginator(products, 3)
+    selected_page = paginator.get_page(page)
+
+    context = {
+        'products': products.order_by('?')[:9],
+        'sale_products': sale_products,
+        'object_list': selected_page,
+        'last_products': last_products,
+    }
+
+    return render(request, 'shop.html', context)
+
+def shop_detail(request, slug):
+    product = Product.objects.filter(slug__iexact=slug).first()
+
+    related_products = Product.objects.filter(category=product.category).exclude(id=product.id)[:4]
 
     context = {
         'product': product,

@@ -61,17 +61,26 @@ class Banner(BaseModel):
 
 class Product(BaseModel):
     name = models.CharField(max_length=100)
+
+    slug = models.SlugField(unique=True, null=True, blank=True, max_length=225)
+
     banner = models.ForeignKey(Banner, on_delete=models.SET_NULL, null=True, blank=True)
     description = RichTextField(null=True, blank=True)
     views = models.IntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    percentage = models.IntegerField()
+    percentage = models.IntegerField(null=True, blank=True)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE,
         blank=True, null=True,
         related_name="products"        
     )
     tags = models.ManyToManyField(Tag, blank=True)
+
+    def save(self, *args, **kwargs):  
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
