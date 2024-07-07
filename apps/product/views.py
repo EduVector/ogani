@@ -39,15 +39,30 @@ def shop_detail(request, slug):
 
 
 def shop(request):
+    min_price = request.GET.get('min', None)
+    max_price = request.GET.get('max', None)
+    print("Min price: ", min_price)
+    print("Max price: ", max_price)
+
     page = request.GET.get('page')
+
+    query = request.GET.get('q')
+    cat = request.GET.get('cat')
+
     products = Product.objects.all()
     sale_products = products.order_by('-percentage').exclude(Q(percentage=None) | Q(percentage=0))[:6]
+    last_products = products.order_by('-id')[:6]
+
+
+    if max_price and min_price:
+        products = Product.objects.filter(price__gte=float(min_price.strip('$')), price__lte=float(max_price.strip('$')))
 
     paginator = Paginator(products, 1)
     selected_page = paginator.get_page(page)
     context = {
         'products': products.order_by('?')[:9],
         'sale_products': sale_products,
-        'object_list': selected_page
+        'object_list': selected_page,
+        'last_products': last_products
     }
     return render(request, 'shop.html', context)

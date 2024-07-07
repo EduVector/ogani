@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from preview.colorlib.com/theme/ogani/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Jun 2024 14:18:35 GMT -->
+<!-- Mirrored from preview.colorlib.com/theme/ogani/{% url 'home' %} by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Jun 2024 14:18:35 GMT -->
 
 <head>
   <meta charset="UTF-8">
@@ -34,18 +34,18 @@
   <div class="humberger__menu__overlay"></div>
   <div class="humberger__menu__wrapper">
     <div class="humberger__menu__logo">
-      <a href="#"><img src="img/logo.png" alt></a>
+      <a href="#"><img src="{% static '' %}img/logo.png" alt></a>
     </div>
     <div class="humberger__menu__cart">
       <ul>
-        <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-        <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+        <li><a href="{% url 'wishlist' %}"><i class="fa fa-heart"></i> <span>{{ wishlist_count }}</span></a></li>
+        <li><a href="{% url 'cart' %}"><i class="fa fa-shopping-bag"></i> <span>{{ cart_items_count }}</span></a></li>
       </ul>
-      <div class="header__cart__price">item: <span>$150.00</span></div>
+      <div class="header__cart__price">item: <span>$ {{ cart_total }}</span></div>
     </div>
     <div class="humberger__menu__widget">
       <div class="header__top__right__language">
-        <img src="img/language.png" alt>
+        <img src="{% static '' %}img/language.png" alt>
         <div>English</div>
         <span class="arrow_carrot-down"></span>
         <ul>
@@ -59,16 +59,16 @@
     </div>
     <nav class="humberger__menu__nav mobile-menu">
       <ul>
-        <li class="active"><a href="index.html">Home</a></li>
-        <li><a href="shop-grid.html">Shop</a></li>
-        <li><a href="#">Pages</a>
+        <li class="active"><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'shop' %}">Shop</a></li>
+        <!-- <li><a href="#">Pages</a>
           <ul class="header__menu__dropdown">
             <li><a href="shop-details.html">Shop Details</a></li>
             <li><a href="shoping-cart.html">Shoping Cart</a></li>
             <li><a href="checkout.html">Check Out</a></li>
             <li><a href="blog-details.html">Blog Details</a></li>
           </ul>
-        </li>
+        </li> -->
         <li><a href="blog.html">Blog</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
@@ -113,7 +113,7 @@
                 <a href="#"><i class="fa fa-pinterest-p"></i></a>
               </div>
               <div class="header__top__right__language">
-                <img src="img/language.png" alt>
+                <img src="{% static '' %}img/language.png" alt>
                 <div>English</div>
                 <span class="arrow_carrot-down"></span>
                 <ul>
@@ -133,7 +133,7 @@
       <div class="row">
         <div class="col-lg-3">
           <div class="header__logo">
-            <a href="index.html"><img src="img/logo.png" alt></a>
+            <a href="{% url 'home' %}"><img src="{% static '' %}img/logo.png" alt></a>
           </div>
         </div>
         <div class="col-lg-6">
@@ -141,14 +141,14 @@
             <ul>
               <li class="active"><a href="{% url 'home' %}">Home</a></li>
               <li><a href="{% url 'shop' %}">Shop</a></li>
-              <li><a href="#">Pages</a>
+              <!-- <li><a href="#">Pages</a>
                 <ul class="header__menu__dropdown">
                   <li><a href="shop-details.html">Shop Details</a></li>
                   <li><a href="shoping-cart.html">Shoping Cart</a></li>
                   <li><a href="checkout.html">Check Out</a></li>
                   <li><a href="blog-details.html">Blog Details</a></li>
                 </ul>
-              </li>
+              </li> -->
               <li><a href="blog.html">Blog</a></li>
               <li><a href="contact.html">Contact</a></li>
             </ul>
@@ -157,10 +157,10 @@
         <div class="col-lg-3">
           <div class="header__cart">
             <ul>
-              <li><a href="#"><i class="fa fa-heart"></i> <span>{{ wishlist_count }}</span></a></li>
-              <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+              <li><a href="{% url 'wishlist' %}"><i class="fa fa-heart"></i> <span>{{ wishlist_count }}</span></a></li>
+              <li><a href="{% url 'cart' %}"><i class="fa fa-shopping-bag"></i> <span>{{ cart_items_count }}</span></a></li>
             </ul>
-            <div class="header__cart__price">item: <span>$150.00</span></div>
+            <div class="header__cart__price">item: <span>$ {{ cart_total }} </span></div>
           </div>
         </div>
       </div>
@@ -180,7 +180,7 @@
         <div class="col-lg-3 col-md-6 col-sm-6">
           <div class="footer__about">
             <div class="footer__about__logo">
-              <a href="index.html"><img src="img/logo.png" alt></a>
+              <a href="{% url 'home' %}"><img src="{% static '' %}img/logo.png" alt></a>
             </div>
             <ul>
               <li>Address: 60-49 Road 11378 New York</li>
@@ -241,14 +241,17 @@
                   target="_blank">Colorlib</a>
               </p>
             </div>
-            <div class="footer__copyright__payment"><img src="img/payment-item.png" alt></div>
+            <div class="footer__copyright__payment"><img src="{% static '' %}img/payment-item.png" alt></div>
           </div>
         </div>
       </div>
     </div>
   </footer>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  {% block js %}
 
+  {% endblock %}
   <script src="{% static '' %}js/jquery-3.3.1.min.js"></script>
   <script src="{% static '' %}js/bootstrap.min.js"></script>
   <script src="{% static '' %}js/jquery.nice-select.min.js"></script>
@@ -257,21 +260,8 @@
   <script src="{% static '' %}js/mixitup.min.js"></script>
   <script src="{% static '' %}js/owl.carousel.min.js"></script>
   <script src="{% static '' %}js/main.js"></script>
-
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-
-    gtag('config', 'UA-23581568-13');
-  </script>
-  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
-    integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
-    data-cf-beacon='{"rayId":"897cde453a4b2d77","b":1,"version":"2024.4.1","token":"cd0b4b3a733644fc843ef0b185f98241"}'
-    crossorigin="anonymous"></script>
 </body>
 
-<!-- Mirrored from preview.colorlib.com/theme/ogani/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Jun 2024 14:19:32 GMT -->
+<!-- Mirrored from preview.colorlib.com/theme/ogani/{% url 'home' %} by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Jun 2024 14:19:32 GMT -->
 
 </html>

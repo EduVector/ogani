@@ -24,7 +24,8 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
 
     # local path
-    path('', include('apps.product.urls'))
+    path('', include('apps.product.urls')),
+    path('order/', include('apps.order.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -76,7 +76,6 @@ class Product(BaseModel):
     @property
     def avg_rate(self):
         rates = self.rates.annotate(avg_rate=models.Avg('rate'))
-        print(rates)
         return rates['avg_rate']
     
     

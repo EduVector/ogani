@@ -162,6 +162,19 @@
     /*-----------------------
 		Price Range Slider
 	------------------------ */
+    function sendPrice(min, max) {
+        $.ajax({
+          url: "shop",
+          data: {
+            min: min,
+            max: max
+          },
+          success: function(data) {
+            console.log(data);
+          }
+        });
+      }
+
     var rangeSlider = $(".price-range"),
         minamount = $("#minamount"),
         maxamount = $("#maxamount"),
@@ -175,10 +188,15 @@
         slide: function (event, ui) {
             minamount.val('$' + ui.values[0]);
             maxamount.val('$' + ui.values[1]);
+            sendPrice(ui.values[0], ui.values[1]);
+            console.log(ui.values[0], ui.values[1]);
         }
     });
     minamount.val('$' + rangeSlider.slider("values", 0));
     maxamount.val('$' + rangeSlider.slider("values", 1));
+    console.log(rangeSlider.slider("values", 0), rangeSlider.slider("values", 1));
+
+    sendPrice(rangeSlider.slider("values", 0), rangeSlider.slider("values", 1));
 
     /*--------------------------
         Select
