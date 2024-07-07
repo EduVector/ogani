@@ -3,48 +3,46 @@ from apps.blog.models import Category, Tag, Blog
 
 
 def blog(request):
-    # tag = request.GET.get('tag')
-    # cat = request.GET.get('cat')
+    tag = request.GET.get('tag')
+    cat = request.GET.get('cat')
 
-    blogs = Blog.objects.all().order_by('-id')[:6]
+    blogs = Blog.objects.all().order_by('-id')
     recent_blogs = Blog.objects.all().order_by('-id')[:3]
     tags = Tag.objects.all().order_by('name')
     categories = Category.objects.all().order_by('name')
 
+    if tag:
+        blogs = blogs.filter(tags__slug__exact=tag)
 
-    # if tag:
-    #     blogs = blogs.filter(tags__slug__exact=tag)
-
-    # if cat:
-    #     blogs = blogs.filter(category__slug__exact=cat)
+    if cat:
+        blogs = blogs.filter(category__slug__exact=cat)
 
     context = {
-        'blogs': blogs,
+        'blogs': blogs[:6],
         'tags': tags,
         'recent_blogs': recent_blogs,
         'category': categories,
-
     }
 
     return render(request, 'blog.html', context)
 
 def blog_detail(request, slug):
-    # tag = request.GET.get('tag')
-    # cat = request.GET.get('cat')
+    tag = request.GET.get('tag')
+    cat = request.GET.get('cat')
 
     blog = Blog.objects.get(slug__exact=slug)
 
-    blogs = Blog.objects.all().order_by('-id')[:3]
+    blogs = Blog.objects.all().order_by('-id')
 
-    # if tag:
-    #     blogs = blogs.filter(tags__slug__exact=tag)
+    if tag:
+        blogs = blogs.filter(tags__slug__exact=tag)
 
-    # if cat:
-    #     blogs = blogs.filter(category__slug__exact=cat)    
+    if cat:
+        blogs = blogs.filter(category__slug__exact=cat)
 
     context = { 
         'blog': blog,
-        'blogs': blogs,
+        'blogs': blogs[:3],
     }
 
     return render(request, 'blog-detail.html', context)

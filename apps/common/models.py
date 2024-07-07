@@ -8,3 +8,11 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class SubEmail(models.Model):
+    email = models.EmailField(max_length=225, unique=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.email
+    

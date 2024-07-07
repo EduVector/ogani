@@ -13,12 +13,12 @@
       <div class="col-lg-9">
         <div class="hero__search">
           <div class="hero__search__form">
-            <form action="#search">
+            <form action="#">
               <div class="hero__search__categories">
                 All Categories
                 <span class="arrow_carrot-down"></span>
               </div>
-              <input type="text" placeholder="What do yo u need?">
+              <input type="text" name="query" placeholder="What do yo u need?">
               <button type="submit" class="site-btn">SEARCH</button>
             </form>
           </div>
@@ -37,7 +37,7 @@
             <span>{{ banner.category }}</span>
             <h2>{{ banner.name }}</h2>
             <p>{{ banner.description|safe|slice:":40" }}</p>
-            <a href="/" class="primary-btn">SHOP NOW</a>
+            <a href="{% url 'index' %}" class="primary-btn">SHOP NOW</a>
           </div>
         </div>
       </div>
