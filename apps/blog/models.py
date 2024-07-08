@@ -8,7 +8,6 @@ from django.urls import reverse
 
 class Category(BaseModel):
     name = models.CharField(max_length=225)
-
     slug = models.SlugField(unique=True, null=True, blank=True, max_length=225)
 
     def save(self, *args, **kwargs):  
@@ -23,7 +22,6 @@ class Category(BaseModel):
 
 class Tag(BaseModel):
     name = models.CharField(max_length=225)
-
     slug = models.SlugField(unique=True, null=True, blank=True, max_length=225)
 
     def save(self, *args, **kwargs):  
@@ -38,9 +36,7 @@ class Tag(BaseModel):
 
 class Blog(BaseModel):
     name = models.CharField(max_length=225)
-
     slug = models.SlugField(unique=True, null=True, blank=True, max_length=225)
-
     description = RichTextField(null=True, blank=True)
     image = models.ImageField(upload_to='blogs/', null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)

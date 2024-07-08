@@ -7,9 +7,9 @@
 <section class="hero hero-normal">
   <div class="container">
     <div class="row">
-      
+
       {% include 'categories.html' %}
-      
+
       <div class="col-lg-9">
         <div class="hero__search">
           <div class="hero__search__form">
@@ -46,7 +46,7 @@
           <h2>{{ product.name }}</h2>
           <div class="breadcrumb__option">
             <a href="{% url 'index' %}">Home</a>
-            <a href="{% url 'index' %} ?cat={{ product.category.slug }}">{{ product.category.name }}</a>
+            <a href="?cat={{ product.category.slug }}">{{ product.category.name }}</a>
             <span>{{ product.name }}</span>
           </div>
         </div>
@@ -92,8 +92,9 @@
               </div>
             </div>
           </div>
-          <a href="#" class="primary-btn">ADD TO CARD</a>
-          <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+          <input type="hidden" id="product_id" value="{{ product.id }}">
+          <a href="#" id="add_to_cart" class="primary-btn">ADD TO CARD</a>
+          <a href="{% url 'add_to_wish_list' product.id %}" class="heart-icon"><span class="icon_heart_alt"></span></a>
           <ul>
             <li><b>Availability</b> <span>In Stock</span></li>
             <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
@@ -170,7 +171,7 @@
         <div class="product__item">
           <div class="product__item__pic set-bg" data-setbg="{{ product.images.first.image.url }}">
             <ul class="product__item__pic__hover">
-              <li><a href="#"><i class="fa fa-heart"></i></a></li>
+              <li><a href="{% url 'add_to_wish_list' product.id %}"><i class="fa fa-heart"></i></a></li>
               <li><a href="#"><i class="fa fa-retweet"></i></a></li>
               <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
             </ul>
@@ -186,5 +187,34 @@
     </div>
   </div>
 </section>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+  $(document).ready(function () {
+    $("#add_to_cart").click(function () {
+      let product_id = $('#product_id').val();
+      let quantity = $('.pro-qty input').val();
+      console.log("Clicked!");
+      $.ajax({
+        url: "{% url 'add_to_cart' %}",
+        type: "POST",
+        data: {
+          product_id: product_id,
+          quantity: quantity,
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function (response) {
+          window.location.reload();
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      })
+    });
+  });
+</script>
 
 {% endblock %}

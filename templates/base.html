@@ -37,10 +37,10 @@
         </div>
         <div class="humberger__menu__cart">
             <ul>
-                <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                <li><a href="{% url 'wishlist' %}"><i class="fa fa-heart"></i> <span>{{ wishlist_count }}</span></a></li>
+                <li><a href="{% url 'cart' %}"><i class="fa fa-shopping-bag"></i> <span>{{ cart_items_count }}</span></a></li>
             </ul>
-            <div class="header__cart__price">Item: <span>$150.00</span></div>
+            <div class="header__cart__price">Item: <span>${{ cart_total }}</span></div>
         </div>
         <div class="humberger__menu__widget">
             <div class="header__top__right__language">
@@ -53,23 +53,15 @@
                 </ul>
             </div>
             <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> Login</a>
+                <a href="#"><i class="fa fa-user"></i>Login</a>
             </div>
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
                 <li class="active"><a href="{% url 'index' %}">Home</a></li>
-                <li><a href="{% url 'shop' %}">Shop</a></li>
-                <li><a href="#">Pages</a>
-                    <ul class="header__menu__dropdown">
-                        <li><a href="shop-details.html">Shop Details</a></li>
-                        <li><a href="shoping-cart.html">Shoping Cart</a></li>
-                        <li><a href="checkout.html">Check Out</a></li>
-                        <li><a href="blog-details.html">Blog Details</a></li>
-                    </ul>
-                </li>
-                <li><a href="{% url 'blog' %}">Blog</a></li>
-                <li><a href="{% url 'contact' %}">Contact</a></li>
+                <li class="active"><a href="{% url 'shop' %}">Shop</a></li>
+                <li class="active"><a href="{% url 'blog' %}">Blog</a></li>
+                <li class="active"><a href="{% url 'contact' %}">Contact</a></li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -142,28 +134,20 @@
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a href="{% url 'index' %}">Home</a></li>
-                            <li><a href="{% url 'shop' %}">Shop</a></li>
-                            <li><a href="#">Pages</a>
-                                <ul class="header__menu__dropdown">
-                                    <li><a href="shop-details.html">Shop Details</a></li>
-                                    <li><a href="shoping-cart.html">Shoping Cart</a></li>
-                                    <li><a href="checkout.html">Check Out</a></li>
-                                    <li><a href="blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="{% url 'blog' %}">Blog</a></li>
-                            <li><a href="{% url 'contact' %}">Contact</a></li>
+                            <li class="active"><a href="{% url 'shop' %}">Shop</a></li>
+                            <li class="active"><a href="{% url 'blog' %}">Blog</a></li>
+                            <li class="active"><a href="{% url 'contact' %}">Contact</a></li>
                         </ul>
                     </nav>
                 </div>
                 <div class="col-lg-3">
                     <div class="header__cart">
                         <ul>
-                            <li><a href="#"><i class="fa fa-heart"></i> <span>{{ wishlist_count }}</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                          <li><a href="{% url 'wishlist' %}"><i class="fa fa-heart"></i> <span>{{ wishlist_count }}</span></a></li>
+                          <li><a href="{% url 'cart' %}"><i class="fa fa-shopping-bag"></i> <span>{{ cart_items_count }}</span></a></li>
                         </ul>
-                        <div class="header__cart__price">item: <span>$150.00</span></div>
-                    </div>
+                        <div class="header__cart__price">Item: <span>$ {{ cart_total }} </span></div>
+                      </div>
                 </div>
             </div>
             <div class="humberger__open">
@@ -222,7 +206,7 @@
                         <form action="#" method="post">
 
                             {% csrf_token %}
-                            
+
                             <input type="text" name="subemail" placeholder="Enter your mail">
                             <button type="submit" class="site-btn">Subscribe</button>
                         </form>
@@ -245,17 +229,23 @@
                                     src="https://preview.colorlib.com/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
                                 <script>document.write(new Date().getFullYear());</script> All rights reserved | This
                                 template is made
-                                with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://t.me/vectorzafar/"
-                                    target="_blank">EduVector</a>
+                                with <i class="fa fa-heart" aria-hidden="true"></i> by <a
+                                    href="https://t.me/vectorzafar/" target="_blank">EduVector</a>
                             </p>
                         </div>
-                        <div class="footer__copyright__payment"><img src="{% static '' %}img/payment-item.png" alt></div>
+                        <div class="footer__copyright__payment"><img src="{% static '' %}img/payment-item.png" alt>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    {% block js %}
+
+    {% endblock %}
 
     <script src="{% static '' %}js/jquery-3.3.1.min.js"></script>
     <script src="{% static '' %}js/bootstrap.min.js"></script>
@@ -282,3 +272,4 @@
 </body>
 
 </html>
+ 

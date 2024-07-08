@@ -8,9 +8,8 @@ from django.urls import reverse
 
 
 class Category(BaseModel):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=225)
     image = models.ImageField(upload_to="cats/", null=True, blank=True)
-
     slug = models.SlugField(unique=True, null=True, blank=True, max_length=225)
 
     def save(self, *args, **kwargs):  
@@ -18,15 +17,13 @@ class Category(BaseModel):
             self.slug = slugify(self.name)
 
         return super().save(*args, **kwargs)
-    
 
     def __str__(self):
         return self.name
 
 
 class Tag(BaseModel):
-    name = models.CharField(max_length=100)
-
+    name = models.CharField(max_length=225)
     slug = models.SlugField(unique=True, null=True, blank=True, max_length=225)
 
     def save(self, *args, **kwargs):  
@@ -40,14 +37,13 @@ class Tag(BaseModel):
 
 
 class Banner(BaseModel):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=225)
     image = models.ImageField(upload_to='banners/')
     description = RichTextField(null=True, blank=True)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE,
         blank=True, null=True,
     )
-    
     parent = models.ForeignKey(
         'self', 
         on_delete=models.CASCADE,
@@ -60,10 +56,8 @@ class Banner(BaseModel):
 
 
 class Product(BaseModel):
-    name = models.CharField(max_length=100)
-
+    name = models.CharField(max_length=225)
     slug = models.SlugField(unique=True, null=True, blank=True, max_length=225)
-
     banner = models.ForeignKey(Banner, on_delete=models.SET_NULL, null=True, blank=True)
     description = RichTextField(null=True, blank=True)
     views = models.IntegerField(default=0)
@@ -102,7 +96,6 @@ class Product(BaseModel):
     def avg_rate(self):
         rates = self.rates.annotate(avg_rate=models.Avg('rate'))
         return rates['avg_rate']
-    
     
     @property
     def reviews_count(self):
