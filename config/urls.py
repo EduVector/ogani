@@ -20,12 +20,16 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
+from django.conf.urls.i18n import i18n_patterns
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     path('ckeditor/', include('ckeditor_uploader.urls')),
+
+] + i18n_patterns(
+    # language
+    path('i18n/', include('django.conf.urls.i18n')),
 
     path('', include('apps.product.urls')),
     path('', include('apps.contact.urls')),
@@ -34,7 +38,9 @@ urlpatterns = [
 
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
-]
+
+    # prefix_default_language=False
+)
 
 handler404 = "config.errors.page_not_found_view"
 
